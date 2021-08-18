@@ -1,8 +1,8 @@
 # report.py
 #
-# Exercise 2.5
-import sys
+# Exercise 2.6
 import csv
+from pprint import pprint
 
 
 def read_portfolio(filename):
@@ -27,10 +27,33 @@ def read_portfolio(filename):
                          'price': float(row[2])}
                 portfolio.append(stock)
             except ValueError:
-                print("Couldn't parse", row)
+                pass
 
     return portfolio
 
 
-cost = read_portfolio('Work/Data/portfolio.csv')
-print(f'Total cost: {cost}')
+def read_prices(filename):
+    """Read prices of stocks from file
+
+    Args:
+        filename (string): filename
+
+    Returns:
+        list of dictionary: prices
+    """
+    stock_prices = {}
+    with open(filename, 'rt') as f:
+        rows = csv.reader(f)
+        for row in rows:
+            try:
+                stock_prices[row[0]] = float(row[1])
+            except IndexError:
+                pass
+
+    return stock_prices
+
+
+portfolio = read_portfolio('Work/Data/portfolio.csv')
+prices = read_prices('Work/Data/prices.csv')
+pprint(portfolio)
+pprint(prices)
