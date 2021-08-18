@@ -1,6 +1,6 @@
 # report.py
 #
-# Exercise 2.4
+# Exercise 2.5
 import sys
 import csv
 
@@ -12,7 +12,7 @@ def read_portfolio(filename):
         filename (string): path to file
 
     Returns:
-        list of tuples: Portfolio
+        list of dictionary: Portfolio
     """
     portfolio = []
 
@@ -22,7 +22,9 @@ def read_portfolio(filename):
 
         for row in rows:
             try:
-                stock = (row[0], int(row[1]), float(row[2]))
+                stock = {'name': row[0],
+                         'shares': int(row[1]),
+                         'price': float(row[2])}
                 portfolio.append(stock)
             except ValueError:
                 print("Couldn't parse", row)
@@ -30,11 +32,5 @@ def read_portfolio(filename):
     return portfolio
 
 
-if len(sys.argv) == 2:
-    filename = sys.argv[1]
-else:
-    filename = input('Enter a filename:')
-
-cost = read_portfolio('Work/Data/missing.csv')
 cost = read_portfolio('Work/Data/portfolio.csv')
 print(f'Total cost: {cost}')
