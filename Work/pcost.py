@@ -1,22 +1,25 @@
 # pcost.py
 #
-# Exercise 1.27
+# Exercise 1.32
+import csv
+
+
 def portfolio_cost(filename):
     total = 0.0
 
     with open(filename, 'rt') as f:
-        header = next(f)
+        rows = csv.reader(f)
+        header = next(rows)
+
         num_shares = 0.0
         price = 0.0
 
-        for line in f:
-            row = line.split(',')
-
+        for row in rows:
             try:
                 num_shares = int(row[1])
                 price = float(row[2])
             except ValueError:
-                print("Couldn't parse", line)
+                print("Couldn't parse", row)
 
             total += num_shares * price
 
