@@ -1,8 +1,7 @@
 # report.py
 #
-# Exercise 2.6
+# Exercise 2.7
 import csv
-from pprint import pprint
 
 
 def read_portfolio(filename):
@@ -55,5 +54,17 @@ def read_prices(filename):
 
 portfolio = read_portfolio('Work/Data/portfolio.csv')
 prices = read_prices('Work/Data/prices.csv')
-pprint(portfolio)
-pprint(prices)
+
+total_cost = 0.0
+
+for stock in portfolio:
+    total_cost += stock['price'] * stock['shares']
+
+print(f'Total cost: {total_cost}')
+
+total_value = 0.0
+for stock in portfolio:
+    total_value += prices[stock['name']] * stock['shares']
+
+print(f'Total value: {total_value}')
+print(f'Gain: {(total_value - total_cost):0.2f}')
