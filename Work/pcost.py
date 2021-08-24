@@ -1,6 +1,6 @@
 # pcost.py
 #
-# Exercise 1.33
+# Exercise 2.16
 import csv
 
 
@@ -19,13 +19,14 @@ def portfolio_cost(filename):
         rows = csv.reader(f)
         header = next(rows)
 
-        for row in rows:
+        for row_num, row in enumerate(rows, start=1):
+            record = dict(zip(header, row))
             try:
-                num_shares = int(row[1])
-                price = float(row[2])
+                num_shares = int(record['shares'])
+                price = float(record['price'])
                 total += num_shares * price
             except ValueError:
-                print("Couldn't parse", row)
+                print(f'Row {row_num}: Bad row: {row}')
 
     return total
 

@@ -1,6 +1,6 @@
 # report.py
 #
-# Exercise 2.12
+# Exercise 2.16
 import csv
 
 
@@ -19,14 +19,15 @@ def read_portfolio(filename):
         rows = csv.reader(f)
         header = next(rows)
 
-        for row in rows:
+        for row_num, row in enumerate(rows, start=1):
+            record = dict(zip(header, row))
             try:
-                stock = {'name': row[0],
-                         'shares': int(row[1]),
-                         'price': float(row[2])}
+                stock = {'name': record['name'],
+                         'shares': int(record['shares']),
+                         'price': float(record['price'])}
                 portfolio.append(stock)
             except ValueError:
-                pass
+                print(f'read_portfolio(filename) :: Row {row_num}: Bad row: {row}')
 
     return portfolio
 
@@ -41,13 +42,17 @@ def read_prices(filename):
         list of dictionary: prices
     """
     stock_prices = {}
+    header = ['name', 'price']
     with open(filename, 'rt') as f:
         rows = csv.reader(f)
-        for row in rows:
+        for row_num, row in enumerate(rows,start=1):
+            record = dict(zip(header, row))
             try:
-                stock_prices[row[0]] = float(row[1])
+                stock_prices[record['name']] = float(record['price'])
             except IndexError:
-                pass
+                print(f'read_prices(filename) :: Row {row_num}: Bad row: {row}')
+            except KeyError:
+                print(f'read_prices(filename) :: Row {row_num}: Bad row: {row}')
 
     return stock_prices
 
