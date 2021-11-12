@@ -2,6 +2,7 @@
 #
 # Exercise 2.16
 import csv
+from collections import Counter
 
 
 def read_portfolio(filename):
@@ -27,7 +28,8 @@ def read_portfolio(filename):
                          'price': float(record['price'])}
                 portfolio.append(stock)
             except ValueError:
-                print(f'read_portfolio(filename) :: Row {row_num}: Bad row: {row}')
+                print(
+                    f'read_portfolio(filename) :: Row {row_num}: Bad row: {row}')
 
     return portfolio
 
@@ -45,14 +47,16 @@ def read_prices(filename):
     header = ['name', 'price']
     with open(filename, 'rt') as f:
         rows = csv.reader(f)
-        for row_num, row in enumerate(rows,start=1):
+        for row_num, row in enumerate(rows, start=1):
             record = dict(zip(header, row))
             try:
                 stock_prices[record['name']] = float(record['price'])
-            except IndexError:
-                print(f'read_prices(filename) :: Row {row_num}: Bad row: {row}')
-            except KeyError:
-                print(f'read_prices(filename) :: Row {row_num}: Bad row: {row}')
+            except IndexError as ie:
+                print(
+                    f'{IndexError.__name__} :: {ie} :: read_prices({filename}) :: Row {row_num}: Bad row: {row}')
+            except KeyError as ke:
+                print(
+                    f'{KeyError.__name__} :: {ke} :: read_prices({filename}) :: Row {row_num}: Bad row: {row}')
 
     return stock_prices
 
@@ -118,14 +122,19 @@ def make_report(data):
             f'{row[0]:>10s} {row[1]:>10d} {formated_price:>10s} {row[3]:>10.2f}')
 
 
-# Read files
-portfolio = read_portfolio('Work/Data/portfolio.csv')
-prices = read_prices('Work/Data/prices.csv')
+def main():
+    # Read files
+    portfolio = read_portfolio('Work/Data/portfolio.csv')
+    prices = read_prices('Work/Data/prices.csv')
 
-# Get data
-data = get_report_data(portfolio, prices)
+    # Get data
+    data = get_report_data(portfolio, prices)
 
-# Make report
-make_report(data)
+    # Make report
+    make_report(data)
 
-report = make_total_report(portfolio, prices)
+    report = make_total_report(portfolio, prices)
+
+
+if __name__ == "__main__":
+    main()
